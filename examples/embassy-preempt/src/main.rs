@@ -1,4 +1,5 @@
 #![feature(impl_trait_in_assoc_type)]
+#![feature(type_alias_impl_trait)]
 #![cfg_attr(feature = "axstd", no_std)]
 #![cfg_attr(feature = "axstd", no_main)]
 
@@ -6,10 +7,12 @@
 #[cfg(feature = "axstd")]
 extern crate axstd as std;
 
+use axasync::executor::PrioFuture;
 use axasync::executor::spawner;
 use axasync::executor::yield_now;
 use axasync::time::Timer;
 use core::hint::black_box;
+use std::boxed::Box;
 use std::thread::{self, sleep};
 use std::time::Duration;
 
@@ -88,7 +91,7 @@ macro_rules! task_loop {
     };
 }
 
-#[axasync::executor::task(pool_size = 5)]
+#[axasync::executor::task]
 async fn async_tick(id: u64, millis: u64, busy_iters: u64) {
     task_loop! {
         task_type: "ASYNC_TASK_REPORT",
@@ -99,6 +102,27 @@ async fn async_tick(id: u64, millis: u64, busy_iters: u64) {
         busy_work: async_busy_work,
         busy_iters:busy_iters,
     }
+}
+
+fn async_tick_raw(
+    id: u64,
+    millis: u64,
+    busy_iters: u64,
+    prio: u8,
+) -> embassy_executor::SpawnToken<impl Sized> {
+    type Fut = PrioFuture<impl ::core::future::Future + 'static>;
+    const POOL_SIZE: usize = 5;
+    static POOL: embassy_executor::raw::TaskPool<Fut, POOL_SIZE> =
+        embassy_executor::raw::TaskPool::new();
+
+    let prio_fut = PrioFuture::new(async_tick(id, millis, busy_iters), prio);
+    POOL.spawn(|| prio_fut)
+}
+
+#[axasync::executor::task(pool_size = 5)]
+async fn prio_tick(id: u64, millis: u64, busy_iters: u64, prio: u8) {
+    let prio_fut = PrioFuture::new(async_tick(id, millis, busy_iters), prio);
+    prio_fut.await;
 }
 
 fn thread_tick(id: u64, millis: u64, busy_iters: u64) {
@@ -132,7 +156,7 @@ fn main() {
 
     for i in 1..NUM_TASKS {
         spawner()
-            .spawn(async_tick(i, i * 1000, NUM_ITERS_TASKS))
+            .spawn(async_tick_raw(i, i * 1000, NUM_ITERS_TASKS, 8 - i as u8))
             .unwrap();
     }
     // Avoid shut down immediately

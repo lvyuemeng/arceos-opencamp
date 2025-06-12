@@ -153,6 +153,9 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
     #[cfg(feature = "multitask")]
     {
         axtask::init_scheduler();
+    }
+    #[cfg(feature = "embassy-thread")]
+    {
         axembassy::init_spawn();
     }
 
@@ -196,10 +199,13 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
     }
 
     unsafe {
-        #[cfg(feature = "multitask")]
+        // sched_cfs will stuck at main thread
+        // because unpark_task will be called first
+        // before park in axembassy init
+        #[cfg(all(not(feature = "sched_cfs"), feature = "embassy-thread"))]
         {
             // park main task to let embassy task initialize first
-            axtask::park_current_task()
+            axtask::park_current_task();
         }
         main()
     };

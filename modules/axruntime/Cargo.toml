@@ -25,6 +25,9 @@ display = ["axdriver", "axdisplay"]
 rtc = []
 
 embassy-timer = ["axembassy/driver"]
+embassy-thread = ["axembassy/executor-thread"]
+# using sched_cfs shouldn't park main thread first due to its schedule strategy
+sched_cfs = ["axembassy/sched_cfs"]
 
 [dependencies]
 axhal = { workspace = true }

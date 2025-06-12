@@ -14,7 +14,6 @@ use axhal::arch::TaskContext;
 use axhal::tls::TlsArea;
 
 use crate::task_ext::AxTaskExt;
-use crate::task_registry::register_task;
 use crate::{AxCpuMask, AxTask, AxTaskRef, WaitQueue};
 
 /// A unique identifier for a thread.
