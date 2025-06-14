@@ -11,7 +11,6 @@ pub use embassy_executor::{SendSpawner, Spawner};
 
 pub(crate) static SPAWNER: SpinNoIrq<OnceCell<SendSpawner>> = SpinNoIrq::new(OnceCell::new());
 
-/// Get a spawner for the system executor.
 ///
 /// # Panics
 ///

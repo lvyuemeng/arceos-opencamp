@@ -1,4 +1,5 @@
 #![feature(impl_trait_in_assoc_type)]
+#![feature(type_alias_impl_trait)]
 #![cfg_attr(feature = "axstd", no_std)]
 #![cfg_attr(feature = "axstd", no_main)]
 
@@ -6,10 +7,12 @@
 #[cfg(feature = "axstd")]
 extern crate axstd as std;
 
+use axasync::executor::PrioFuture;
 use axasync::executor::spawner;
 use axasync::executor::yield_now;
 use axasync::time::Timer;
 use core::hint::black_box;
+use std::boxed::Box;
 use std::thread::{self, sleep};
 use std::time::Duration;
 
@@ -32,7 +35,7 @@ async fn async_busy_work(iters: u64) -> u64 {
     black_box(total)
 }
 
-macro_rules! task_loop {
+macro_rules! work_loop {
     (
         task_type: $task_type:literal,
         id: $id:expr,
@@ -88,22 +91,66 @@ macro_rules! task_loop {
     };
 }
 
-#[axasync::executor::task(pool_size = 5)]
-async fn async_tick(id: u64, millis: u64, busy_iters: u64) {
-    task_loop! {
-        task_type: "ASYNC_TASK_REPORT",
-        id:id,
-        sleep: |millis| async move {Timer::after_millis(millis).await},
-        millis:millis,
-        is_await: await,
-        busy_work: async_busy_work,
-        busy_iters:busy_iters,
-    }
+macro_rules! priority_task {
+    (
+        $task_type:expr
+        $prio_fn_name:ident,
+        $async_fn_name:ident,
+        $prios:expr,
+        $pool_size:expr,
+    ) => {
+        #[axasync::executor::task(pool_size = $pool_size)]
+        async fn $prio_fn_name(id: u64, millis: u64, busy_iters: u64) {
+            let prio_fut = PrioFuture::new($async_fn_name(id, millis, busy_iters), $prios as u8);
+            prio_fut.await;
+        }
+
+        async fn stringify!($prio_fn_name + "__task")(id: u64, millis: u64, busy_iters: u64) {
+            task_loop! {
+                task_type: $task_type,
+                id: id,
+                sleep: |millis| async move {Timer::after_millis(millis).await},
+                millis: millis,
+                is_await: await,
+                busy_work: async_busy_work,
+                busy_iters: busy_iters,
+            }
+        }
+    };
+}
+
+define_priority_tasks! {
+    "ASYNC_TASK_REPORT_HIGH"
+    prio_tick_high,
+    NUM_HIGH_TASKS,
+    NUM_HIGH_PRIOS,
+}
+
+define_priority_tasks! {
+    "ASYNC_TASK_REPORT_LOW"
+    prio_tick_low,
+    NUM_LOW_TASKS,
+    NUM_LOW_PRIOS,
+}
+
+fn prio_tick_raw(
+    id: u64,
+    millis: u64,
+    busy_iters: u64,
+    prio: u8,
+) -> embassy_executor::SpawnToken<impl Sized> {
+    type Fut = PrioFuture<impl ::core::future::Future + 'static>;
+    const POOL_SIZE: usize = 5;
+    static POOL: embassy_executor::raw::TaskPool<Fut, POOL_SIZE> =
+        embassy_executor::raw::TaskPool::new();
+
+    let prio_fut = PrioFuture::new(async_tick(id, millis, busy_iters), prio);
+    POOL.spawn(|| prio_fut)
 }
 
 fn thread_tick(id: u64, millis: u64, busy_iters: u64) {
-    task_loop! {
-        task_type: "NATIVE_THREAD_REPORT",
+    work_loop! {
+        task_type: "NATIVE_THREAD",
         id:id,
         sleep: |millis| sleep(Duration::from_millis(millis)),
         millis:millis,
@@ -113,15 +160,18 @@ fn thread_tick(id: u64, millis: u64, busy_iters: u64) {
 }
 
 const NUM_THREADS: u64 = 5;
-const NUM_TASKS: u64 = 5;
+const NUM_HIGH_TASKS: u64 = 2;
+const NUM_LOW_TASKS: u64 = 6;
+
+const NUM_HIGH_PRIOS: u64 = 1;
+const NUM_LOW_PRIOS: u64 = 3;
+
 // const NUM_ITERS_THREADS: u64 = 0;
 // const NUM_ITERS_THREADS: u64 = 1_000;
-// const NUM_ITERS_THREADS: u64 = 1_000_000;
-const NUM_ITERS_THREADS: u64 = 100_000_000;
+const NUM_ITERS_THREADS: u64 = 1_000_000;
 // const NUM_ITERS_TASKS: u64 = 0;
-// const NUM_ITERS_TASKS: u64 = 1_000;
-// const NUM_ITERS_TASKS: u64 = 1_000_000;
-const NUM_ITERS_TASKS: u64 = 100_000_000;
+// const NUM_ITERS_TASKS: u64 = 1000;
+const NUM_ITERS_TASKS: u64 = 1_000_000;
 
 #[cfg_attr(feature = "axstd", unsafe(no_mangle))]
 fn main() {
@@ -132,9 +182,14 @@ fn main() {
         });
     }
 
-    for i in 1..NUM_TASKS {
+    for i in 1..NUM_HIGH_TASKS {
         spawner()
-            .spawn(async_tick(i, i * 1000, NUM_ITERS_TASKS))
+            .spawn(prio_tick_high(i, i * 1000, NUM_ITERS_TASKS))
+            .unwrap();
+    }
+    for i in 1..NUM_LOW_TASKS {
+        spawner()
+            .spawn(prio_tick_low(i, i * 1000, NUM_ITERS_TASKS))
             .unwrap();
     }
     // Avoid shut down immediately
