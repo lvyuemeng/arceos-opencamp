@@ -7,8 +7,6 @@ license.workspace = true
 homepage.workspace = true
 
 [features]
-# sched_cfs shouldn't park main thread first due to its schedule strategy
-sched_cfs = ["axtask/sched_cfs"]
 driver = [
 	"dep:embassy-time-driver",
 	"dep:embassy-time-queue-utils",
@@ -20,10 +18,10 @@ embassy-utils = [
 	"dep:embassy-futures",
 	"dep:embassy-sync",
 ]
-executor-multi = []
+
 # executor is in thread interaction 
 executor-preempt = ["executor-thread"]
-executor-thread = ["embassy-utils", "axtask/multitask"]
+executor-thread = ["embassy-utils", "axtask/multitask", "dep:axsync"]
 
 executor-single = ["embassy-utils", "axhal/irq"]
 
@@ -32,6 +30,7 @@ default = ["driver"]
 [dependencies]
 axconfig = { workspace = true }
 axhal = { workspace = true, features = ["irq"] }
+axsync = { workspace = true, features = ["multitask"], optional = true }
 axtask = { workspace = true }
 
 embassy-time-driver = { git = "https://github.com/embassy-rs/embassy", branch = "main", optional = true, features = [

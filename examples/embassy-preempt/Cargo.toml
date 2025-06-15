@@ -3,6 +3,15 @@ name = "embassy-preempt"
 authors = ["nostalgia <lv15623448685@gmail.com>"]
 edition.workspace = true
 
+[features]
+default = []
+
+async-test = []
+thread-test = []
+
+atomic-sum = []
+iter-delay = []
+
 [dependencies]
 axstd = { workspace = true, features = [
 	"multitask",
@@ -11,4 +20,5 @@ axstd = { workspace = true, features = [
 ], optional = true }
 axasync = { workspace = true, features = ["preempt", "time"] }
 
+embassy-executor = { git = "https://github.com/embassy-rs/embassy", branch = "main", default-features = false }
 log = "=0.4.21"

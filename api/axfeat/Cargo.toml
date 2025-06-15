@@ -41,7 +41,7 @@ multitask = [
 ]
 sched_fifo = ["axtask/sched_fifo"]
 sched_rr = ["axtask/sched_rr", "irq"]
-sched_cfs = ["axtask/sched_cfs", "irq", "axruntime/sched_cfs"]
+sched_cfs = ["axtask/sched_cfs", "irq"]
 
 # Embassy asynchronous runtime with multithread support and preemption
 async-preempt = ["async-thread", "axembassy/executor-preempt"]
@@ -50,7 +50,6 @@ async-thread = [
 	"axembassy/driver",
 	"axembassy/executor-thread",
 	"axruntime/embassy-timer",
-	"axruntime/embassy-thread",
 	"multitask",
 	"irq",
 ]

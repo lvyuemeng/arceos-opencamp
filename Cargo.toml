@@ -11,7 +11,6 @@ members = [
     "modules/axhal",
     "modules/axlog",
     "modules/axmm",
-    "modules/axmacros",
     "modules/axdma",
     "modules/axnet",
     "modules/axns",
@@ -32,9 +31,8 @@ members = [
     "examples/httpserver",
     "examples/httpserver",
     "examples/shell",
-    "examples/embassy-preempt",
-    "examples/embassy-thread",
     "examples/embassy-single",
+    "examples/embassy-preempt",
 ]
 
 [workspace.package]

@@ -1,0 +1,273 @@
+make[1]: Entering directory '/home/nostalgia/Proj/RustProj/oscamp-arceos'
+axconfig-gen configs/defconfig.toml configs/platforms/riscv64-qemu-virt.toml  -w smp=1 -w arch=riscv64 -w platform=riscv64-qemu-virt -o "/home/nostalgia/Proj/RustProj/oscamp-arceos/examples/embassy-preempt/analysis/.axconfig.toml" -c "/home/nostalgia/Proj/RustProj/oscamp-arceos/examples/embassy-preempt/analysis/.axconfig.toml"
+    Building App: .., Arch: riscv64, Platform: riscv64-qemu-virt, App type: rust
+cargo -C /home/nostalgia/Proj/RustProj/oscamp-arceos/examples/embassy-preempt/analysis/../ build -Z unstable-options --target riscv64gc-unknown-none-elf --target-dir /home/nostalgia/Proj/RustProj/oscamp-arceos/examples/embassy-preempt/analysis/target --release  --features "axstd/log-level-info iter-delay thread-test async-test"
+rust-objcopy --binary-architecture=riscv64 /home/nostalgia/Proj/RustProj/oscamp-arceos/examples/embassy-preempt/analysis/..//.._riscv64-qemu-virt.elf --strip-all -O binary /home/nostalgia/Proj/RustProj/oscamp-arceos/examples/embassy-preempt/analysis/..//.._riscv64-qemu-virt.bin
+    Running on qemu...
+qemu-system-riscv64 -m 128M -smp 1 -machine virt -bios default -kernel /home/nostalgia/Proj/RustProj/oscamp-arceos/examples/embassy-preempt/analysis/..//.._riscv64-qemu-virt.bin -nographic
+
+OpenSBI v1.5.1
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+
+Platform Name             : riscv-virtio,qemu
+Platform Features         : medeleg
+Platform HART Count       : 1
+Platform IPI Device       : aclint-mswi
+Platform Timer Device     : aclint-mtimer @ 10000000Hz
+Platform Console Device   : uart8250
+Platform HSM Device       : ---
+Platform PMU Device       : ---
+Platform Reboot Device    : syscon-reboot
+Platform Shutdown Device  : syscon-poweroff
+Platform Suspend Device   : ---
+Platform CPPC Device      : ---
+Firmware Base             : 0x80000000
+Firmware Size             : 327 KB
+Firmware RW Offset        : 0x40000
+Firmware RW Size          : 71 KB
+Firmware Heap Offset      : 0x49000
+Firmware Heap Size        : 35 KB (total), 2 KB (reserved), 11 KB (used), 21 KB (free)
+Firmware Scratch Size     : 4096 B (total), 416 B (used), 3680 B (free)
+Runtime SBI Version       : 2.0
+
+Domain0 Name              : root
+Domain0 Boot HART         : 0
+Domain0 HARTs             : 0*
+Domain0 Region00          : 0x0000000000100000-0x0000000000100fff M: (I,R,W) S/U: (R,W)
+Domain0 Region01          : 0x0000000010000000-0x0000000010000fff M: (I,R,W) S/U: (R,W)
+Domain0 Region02          : 0x0000000002000000-0x000000000200ffff M: (I,R,W) S/U: ()
+Domain0 Region03          : 0x0000000080040000-0x000000008005ffff M: (R,W) S/U: ()
+Domain0 Region04          : 0x0000000080000000-0x000000008003ffff M: (R,X) S/U: ()
+Domain0 Region05          : 0x000000000c400000-0x000000000c5fffff M: (I,R,W) S/U: (R,W)
+Domain0 Region06          : 0x000000000c000000-0x000000000c3fffff M: (I,R,W) S/U: (R,W)
+Domain0 Region07          : 0x0000000000000000-0xffffffffffffffff M: () S/U: (R,W,X)
+Domain0 Next Address      : 0x0000000080200000
+Domain0 Next Arg1         : 0x0000000087e00000
+Domain0 Next Mode         : S-mode
+Domain0 SysReset          : yes
+Domain0 SysSuspend        : yes
+
+Boot HART ID              : 0
+Boot HART Domain          : root
+Boot HART Priv Version    : v1.12
+Boot HART Base ISA        : rv64imafdch
+Boot HART ISA Extensions  : sstc,zicntr,zihpm,zicboz,zicbom,sdtrig,svadu
+Boot HART PMP Count       : 16
+Boot HART PMP Granularity : 2 bits
+Boot HART PMP Address Bits: 54
+Boot HART MHPM Info       : 16 (0x0007fff8)
+Boot HART Debug Triggers  : 2 triggers
+Boot HART MIDELEG         : 0x0000000000001666
+Boot HART MEDELEG         : 0x0000000000f0b509
+
+       d8888                            .d88888b.   .d8888b.
+      d88888                           d88P" "Y88b d88P  Y88b
+     d88P888                           888     888 Y88b.
+    d88P 888 888d888  .d8888b  .d88b.  888     888  "Y888b.
+   d88P  888 888P"   d88P"    d8P  Y8b 888     888     "Y88b.
+  d88P   888 888     888      88888888 888     888       "888
+ d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
+d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
+
+arch = riscv64
+platform = riscv64-qemu-virt
+target = riscv64gc-unknown-none-elf
+build_mode = release
+log_level = info
+smp = 1
+
+[  0.050361 0 axruntime:130] Logging is enabled.
+[  0.051456 0 axruntime:131] Primary CPU 0 started, dtb = 0x87e00000.
+[  0.051906 0 axruntime:133] Found physcial memory regions:
+[  0.052424 0 axruntime:135]   [PA:0x80200000, PA:0x80214000) .text (READ | EXECUTE | RESERVED)
+[  0.053012 0 axruntime:135]   [PA:0x80214000, PA:0x8021a000) .rodata (READ | RESERVED)
+[  0.053332 0 axruntime:135]   [PA:0x8021a000, PA:0x8021d000) .data .tdata .tbss .percpu (READ | WRITE | RESERVED)
+[  0.053693 0 axruntime:135]   [PA:0x8021d000, PA:0x8025d000) boot stack (READ | WRITE | RESERVED)
+[  0.054339 0 axruntime:135]   [PA:0x8025d000, PA:0x80263000) .bss (READ | WRITE | RESERVED)
+[  0.054713 0 axruntime:135]   [PA:0x80263000, PA:0x88000000) free memory (READ | WRITE | FREE)
+[  0.055086 0 axruntime:135]   [PA:0x101000, PA:0x102000) mmio (READ | WRITE | DEVICE | RESERVED)
+[  0.055428 0 axruntime:135]   [PA:0xc000000, PA:0xc210000) mmio (READ | WRITE | DEVICE | RESERVED)
+[  0.055767 0 axruntime:135]   [PA:0x10000000, PA:0x10001000) mmio (READ | WRITE | DEVICE | RESERVED)
+[  0.056272 0 axruntime:135]   [PA:0x10001000, PA:0x10009000) mmio (READ | WRITE | DEVICE | RESERVED)
+[  0.056668 0 axruntime:135]   [PA:0x30000000, PA:0x40000000) mmio (READ | WRITE | DEVICE | RESERVED)
+[  0.057033 0 axruntime:135]   [PA:0x40000000, PA:0x80000000) mmio (READ | WRITE | DEVICE | RESERVED)
+[  0.057483 0 axruntime:214] Initialize global memory allocator...
+[  0.057823 0 axruntime:215]   use TLSF allocator.
+[  0.060321 0 axruntime:150] Initialize platform devices...
+[  0.060891 0 axtask::api:77] Initialize scheduling...
+[  0.063364 0 axtask::api:83]   use Completely Fair scheduler.
+[  0.063718 0 axruntime:178] Initialize interrupt handlers...
+[  0.065894 0 axruntime:190] Primary CPU 0 init OK.
+[  0.066279 0:2 embassy_preempt:253] Starting Test
+[  0.071461 0:53 axembassy::asynch:35] Initialize spawner... 
+[  1.075867 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 1, expected 1000000000/ns, actual 1004601100/ns, full 1004601200/ns
+[  1.076986 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 1, expected 1000000000/ns, actual 1005849800/ns, full 1005850200/ns
+[  2.074719 0:4 embassy_preempt:161] NATIVE_THREAD_REPORT 1: volume 50, works 10, times 15/s, iters 1, expected 2000000000/ns, actual 2004289800/ns, full 2004325600/ns
+[  2.075287 0:24 embassy_preempt:161] NATIVE_THREAD_REPORT 21: volume 50, works 10, times 15/s, iters 1, expected 2000000000/ns, actual 2004229600/ns, full 2004229700/ns
+[  2.075763 0:44 embassy_preempt:161] NATIVE_THREAD_REPORT 41: volume 50, works 10, times 15/s, iters 1, expected 2000000000/ns, actual 2004625500/ns, full 2004626000/ns
+[  2.080540 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 2, expected 1000000000/ns, actual 1003566000/ns, full 1004884700/ns
+[  2.081098 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 2, expected 1000000000/ns, actual 1003476100/ns, full 1004113900/ns
+[  2.081910 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 1: volume 15, works 10, times 15/s, iters 1, expected 2000000000/ns, actual 2003595400/ns, full 2003595500/ns
+[  2.082690 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 16: volume 15, works 10, times 15/s, iters 1, expected 2000000000/ns, actual 2004406300/ns, full 2004406300/ns
+[  3.083783 0:5 embassy_preempt:161] NATIVE_THREAD_REPORT 2: volume 50, works 10, times 15/s, iters 1, expected 3000000000/ns, actual 3012854600/ns, full 3012854700/ns
+[  3.084551 0:25 embassy_preempt:161] NATIVE_THREAD_REPORT 22: volume 50, works 10, times 15/s, iters 1, expected 3000000000/ns, actual 3013490700/ns, full 3013490800/ns
+[  3.085055 0:45 embassy_preempt:161] NATIVE_THREAD_REPORT 42: volume 50, works 10, times 15/s, iters 1, expected 3000000000/ns, actual 3013915100/ns, full 3013915300/ns
+[  3.085533 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 3, expected 1000000000/ns, actual 1004439700/ns, full 1004993400/ns
+[  3.086008 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 3, expected 1000000000/ns, actual 1004411200/ns, full 1004909800/ns
+[  3.086597 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 2: volume 15, works 10, times 15/s, iters 1, expected 3000000000/ns, actual 3008479000/ns, full 3008479100/ns
+[  3.087136 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 17: volume 15, works 10, times 15/s, iters 1, expected 3000000000/ns, actual 3009021800/ns, full 3009021900/ns
+[  4.073955 0:6 embassy_preempt:161] NATIVE_THREAD_REPORT 3: volume 50, works 10, times 15/s, iters 1, expected 4000000000/ns, actual 4003020800/ns, full 4003021000/ns
+[  4.080432 0:26 embassy_preempt:161] NATIVE_THREAD_REPORT 23: volume 50, works 10, times 15/s, iters 1, expected 4000000000/ns, actual 4009365900/ns, full 4009366000/ns
+[  4.081144 0:46 embassy_preempt:161] NATIVE_THREAD_REPORT 43: volume 50, works 10, times 15/s, iters 1, expected 4000000000/ns, actual 4010000100/ns, full 4010000200/ns
+[  4.081666 0:4 embassy_preempt:161] NATIVE_THREAD_REPORT 1: volume 50, works 10, times 15/s, iters 2, expected 2000000000/ns, actual 2006386100/ns, full 2006948100/ns
+[  4.082187 0:24 embassy_preempt:161] NATIVE_THREAD_REPORT 21: volume 50, works 10, times 15/s, iters 2, expected 2000000000/ns, actual 2006427000/ns, full 2006900500/ns
+[  4.082699 0:44 embassy_preempt:161] NATIVE_THREAD_REPORT 41: volume 50, works 10, times 15/s, iters 2, expected 2000000000/ns, actual 2006433000/ns, full 2006935600/ns
+[  4.083318 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 3: volume 15, works 10, times 15/s, iters 1, expected 4000000000/ns, actual 4005206600/ns, full 4005206700/ns
+[  4.083926 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 1: volume 15, works 10, times 15/s, iters 2, expected 2000000000/ns, actual 2001477500/ns, full 2002204900/ns
+[  4.084467 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 16: volume 15, works 10, times 15/s, iters 2, expected 2000000000/ns, actual 2001259900/ns, full 2001937900/ns
+[  4.085102 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 18: volume 15, works 10, times 15/s, iters 1, expected 4000000000/ns, actual 4006995400/ns, full 4006995500/ns
+[  4.090785 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 4, expected 1000000000/ns, actual 1004777800/ns, full 1005250100/ns
+[  4.091497 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 4, expected 1000000000/ns, actual 1005015600/ns, full 1005487600/ns
+[  5.080904 0:7 embassy_preempt:161] NATIVE_THREAD_REPORT 4: volume 50, works 10, times 15/s, iters 1, expected 5000000000/ns, actual 5009890900/ns, full 5009891000/ns
+[  5.081890 0:27 embassy_preempt:161] NATIVE_THREAD_REPORT 24: volume 50, works 10, times 15/s, iters 1, expected 5000000000/ns, actual 5010823500/ns, full 5010823600/ns
+[  5.082369 0:47 embassy_preempt:161] NATIVE_THREAD_REPORT 44: volume 50, works 10, times 15/s, iters 1, expected 5000000000/ns, actual 5011221700/ns, full 5011221900/ns
+[  5.082981 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 4: volume 15, works 10, times 15/s, iters 1, expected 5000000000/ns, actual 5004876500/ns, full 5004876600/ns
+[  5.083556 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 19: volume 15, works 10, times 15/s, iters 1, expected 5000000000/ns, actual 5005455300/ns, full 5005455400/ns
+[  5.100364 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 5, expected 1000000000/ns, actual 1008874200/ns, full 1009578800/ns
+[  5.100931 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 5, expected 1000000000/ns, actual 1008945400/ns, full 1009434900/ns
+[  6.080664 0:8 embassy_preempt:161] NATIVE_THREAD_REPORT 5: volume 50, works 10, times 15/s, iters 1, expected 6000000000/ns, actual 6009656200/ns, full 6009656300/ns
+[  6.081542 0:28 embassy_preempt:161] NATIVE_THREAD_REPORT 25: volume 50, works 10, times 15/s, iters 1, expected 6000000000/ns, actual 6010472700/ns, full 6010473100/ns
+[  6.082155 0:48 embassy_preempt:161] NATIVE_THREAD_REPORT 45: volume 50, works 10, times 15/s, iters 1, expected 6000000000/ns, actual 6011003400/ns, full 6011003500/ns
+[  6.082889 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 5: volume 15, works 10, times 15/s, iters 1, expected 6000000000/ns, actual 6004791300/ns, full 6004791400/ns
+[  6.083659 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 2: volume 15, works 10, times 15/s, iters 2, expected 3000000000/ns, actual 2996404800/ns, full 2996913200/ns
+[  6.084267 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 1: volume 15, works 10, times 15/s, iters 3, expected 2000000000/ns, actual 1999818800/ns, full 2000340800/ns
+[  6.084911 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 16: volume 15, works 10, times 15/s, iters 3, expected 2000000000/ns, actual 1999798300/ns, full 2000416300/ns
+[  6.085546 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 17: volume 15, works 10, times 15/s, iters 2, expected 3000000000/ns, actual 2997908300/ns, full 2998387000/ns
+[  6.086363 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 20: volume 15, works 10, times 15/s, iters 1, expected 6000000000/ns, actual 6008353800/ns, full 6008353900/ns
+[  6.090512 0:4 embassy_preempt:161] NATIVE_THREAD_REPORT 1: volume 50, works 10, times 15/s, iters 3, expected 2000000000/ns, actual 2008329500/ns, full 2008845800/ns
+[  6.091624 0:24 embassy_preempt:161] NATIVE_THREAD_REPORT 21: volume 50, works 10, times 15/s, iters 3, expected 2000000000/ns, actual 2008927800/ns, full 2009435300/ns
+[  6.093373 0:44 embassy_preempt:161] NATIVE_THREAD_REPORT 41: volume 50, works 10, times 15/s, iters 3, expected 2000000000/ns, actual 2010176500/ns, full 2010673000/ns
+[  6.094196 0:5 embassy_preempt:161] NATIVE_THREAD_REPORT 2: volume 50, works 10, times 15/s, iters 2, expected 3000000000/ns, actual 3009656000/ns, full 3010414400/ns
+[  6.094957 0:25 embassy_preempt:161] NATIVE_THREAD_REPORT 22: volume 50, works 10, times 15/s, iters 2, expected 3000000000/ns, actual 3009905900/ns, full 3010406500/ns
+[  6.095862 0:45 embassy_preempt:161] NATIVE_THREAD_REPORT 42: volume 50, works 10, times 15/s, iters 2, expected 3000000000/ns, actual 3010329800/ns, full 3010805200/ns
+[  6.110510 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 6, expected 1000000000/ns, actual 1009583900/ns, full 1010147100/ns
+[  6.111100 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 6, expected 1000000000/ns, actual 1009672500/ns, full 1010169100/ns
+[  7.080336 0:9 embassy_preempt:161] NATIVE_THREAD_REPORT 6: volume 50, works 10, times 15/s, iters 1, expected 7000000000/ns, actual 7009325600/ns, full 7009325700/ns
+[  7.080893 0:29 embassy_preempt:161] NATIVE_THREAD_REPORT 26: volume 50, works 10, times 15/s, iters 1, expected 7000000000/ns, actual 7009821200/ns, full 7009821300/ns
+[  7.081536 0:49 embassy_preempt:161] NATIVE_THREAD_REPORT 46: volume 50, works 10, times 15/s, iters 1, expected 7000000000/ns, actual 7010380000/ns, full 7010380100/ns
+[  7.082121 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 6: volume 15, works 10, times 15/s, iters 1, expected 7000000000/ns, actual 7004115800/ns, full 7004115900/ns
+[  7.082680 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 21: volume 15, works 10, times 15/s, iters 1, expected 7000000000/ns, actual 7004677500/ns, full 7004677600/ns
+[  7.120398 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 7, expected 1000000000/ns, actual 1009302300/ns, full 1009886800/ns
+[  7.120980 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 7, expected 1000000000/ns, actual 1009161400/ns, full 1009880300/ns
+[  8.080499 0:10 embassy_preempt:161] NATIVE_THREAD_REPORT 7: volume 50, works 10, times 15/s, iters 1, expected 8000000000/ns, actual 8009486400/ns, full 8009486500/ns
+[  8.080986 0:30 embassy_preempt:161] NATIVE_THREAD_REPORT 27: volume 50, works 10, times 15/s, iters 1, expected 8000000000/ns, actual 8009911400/ns, full 8009911400/ns
+[  8.081411 0:50 embassy_preempt:161] NATIVE_THREAD_REPORT 47: volume 50, works 10, times 15/s, iters 1, expected 8000000000/ns, actual 8010252800/ns, full 8010252900/ns
+[  8.081823 0:6 embassy_preempt:161] NATIVE_THREAD_REPORT 3: volume 50, works 10, times 15/s, iters 2, expected 4000000000/ns, actual 4006661100/ns, full 4007870800/ns
+[  8.082301 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 7: volume 15, works 10, times 15/s, iters 1, expected 8000000000/ns, actual 8004303100/ns, full 8004303200/ns
+[  8.082763 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 3: volume 15, works 10, times 15/s, iters 2, expected 4000000000/ns, actual 3998862300/ns, full 3999446400/ns
+[  8.083318 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 1: volume 15, works 10, times 15/s, iters 4, expected 2000000000/ns, actual 1998455400/ns, full 1999051900/ns
+[  8.083767 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 16: volume 15, works 10, times 15/s, iters 4, expected 2000000000/ns, actual 1998260500/ns, full 1998883500/ns
+[  8.084203 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 18: volume 15, works 10, times 15/s, iters 2, expected 4000000000/ns, actual 3998587700/ns, full 3999101100/ns
+[  8.084623 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 22: volume 15, works 10, times 15/s, iters 1, expected 8000000000/ns, actual 8006629100/ns, full 8006629200/ns
+[  8.090346 0:26 embassy_preempt:161] NATIVE_THREAD_REPORT 23: volume 50, works 10, times 15/s, iters 2, expected 4000000000/ns, actual 4009208800/ns, full 4009916100/ns
+[  8.090825 0:46 embassy_preempt:161] NATIVE_THREAD_REPORT 43: volume 50, works 10, times 15/s, iters 2, expected 4000000000/ns, actual 4009163700/ns, full 4009681000/ns
+[  8.100402 0:4 embassy_preempt:161] NATIVE_THREAD_REPORT 1: volume 50, works 10, times 15/s, iters 4, expected 2000000000/ns, actual 2008791400/ns, full 2009889700/ns
+[  8.100857 0:24 embassy_preempt:161] NATIVE_THREAD_REPORT 21: volume 50, works 10, times 15/s, iters 4, expected 2000000000/ns, actual 2007495500/ns, full 2009234900/ns
+[  8.101291 0:44 embassy_preempt:161] NATIVE_THREAD_REPORT 41: volume 50, works 10, times 15/s, iters 4, expected 2000000000/ns, actual 2007104200/ns, full 2007919800/ns
+[  8.130441 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 8, expected 1000000000/ns, actual 1009463400/ns, full 1010042700/ns
+[  8.130922 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 8, expected 1000000000/ns, actual 1009465300/ns, full 1009941700/ns
+[  9.080504 0:11 embassy_preempt:161] NATIVE_THREAD_REPORT 8: volume 50, works 10, times 15/s, iters 1, expected 9000000000/ns, actual 9009483800/ns, full 9009483900/ns
+[  9.081017 0:31 embassy_preempt:161] NATIVE_THREAD_REPORT 28: volume 50, works 10, times 15/s, iters 1, expected 9000000000/ns, actual 9009928400/ns, full 9009928500/ns
+[  9.081464 0:51 embassy_preempt:161] NATIVE_THREAD_REPORT 48: volume 50, works 10, times 15/s, iters 1, expected 9000000000/ns, actual 9010303300/ns, full 9010303400/ns
+[  9.082053 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 8: volume 15, works 10, times 15/s, iters 1, expected 9000000000/ns, actual 9004061500/ns, full 9004061600/ns
+[  9.082498 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 2: volume 15, works 10, times 15/s, iters 3, expected 3000000000/ns, actual 2998248600/ns, full 2998988800/ns
+[  9.082915 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 17: volume 15, works 10, times 15/s, iters 3, expected 3000000000/ns, actual 2996588400/ns, full 2997392400/ns
+[  9.083329 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 23: volume 15, works 10, times 15/s, iters 1, expected 9000000000/ns, actual 9005357400/ns, full 9005357500/ns
+[  9.100328 0:5 embassy_preempt:161] NATIVE_THREAD_REPORT 2: volume 50, works 10, times 15/s, iters 3, expected 3000000000/ns, actual 3005377600/ns, full 3006131000/ns
+[  9.100876 0:25 embassy_preempt:161] NATIVE_THREAD_REPORT 22: volume 50, works 10, times 15/s, iters 3, expected 3000000000/ns, actual 3005026900/ns, full 3005919800/ns
+[  9.101277 0:45 embassy_preempt:161] NATIVE_THREAD_REPORT 42: volume 50, works 10, times 15/s, iters 3, expected 3000000000/ns, actual 3004814600/ns, full 3005417000/ns
+[  9.138647 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 9, expected 1000000000/ns, actual 1007728900/ns, full 1008206600/ns
+[  9.139190 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 9, expected 1000000000/ns, actual 1007871200/ns, full 1008268300/ns
+[ 10.080480 0:12 embassy_preempt:161] NATIVE_THREAD_REPORT 9: volume 50, works 10, times 15/s, iters 1, expected 10000000000/ns, actual 10009457600/ns, full 10009457600/ns
+[ 10.081668 0:32 embassy_preempt:161] NATIVE_THREAD_REPORT 29: volume 50, works 10, times 15/s, iters 1, expected 10000000000/ns, actual 10010574400/ns, full 10010574500/ns
+[ 10.082391 0:52 embassy_preempt:161] NATIVE_THREAD_REPORT 49: volume 50, works 10, times 15/s, iters 1, expected 10000000000/ns, actual 10011226400/ns, full 10011226500/ns
+[ 10.083037 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 9: volume 15, works 10, times 15/s, iters 1, expected 10000000000/ns, actual 10005270300/ns, full 10005270400/ns
+[ 10.083615 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 4: volume 15, works 10, times 15/s, iters 2, expected 5000000000/ns, actual 5000098700/ns, full 5000634400/ns
+[ 10.084149 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 1: volume 15, works 10, times 15/s, iters 5, expected 2000000000/ns, actual 2000397900/ns, full 2000831000/ns
+[ 10.084684 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 16: volume 15, works 10, times 15/s, iters 5, expected 2000000000/ns, actual 2000492700/ns, full 2000917000/ns
+[ 10.085175 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 19: volume 15, works 10, times 15/s, iters 2, expected 5000000000/ns, actual 5001092600/ns, full 5001619800/ns
+[ 10.085753 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 24: volume 15, works 10, times 15/s, iters 1, expected 10000000000/ns, actual 10008010700/ns, full 10008010800/ns
+[ 10.090360 0:7 embassy_preempt:161] NATIVE_THREAD_REPORT 4: volume 50, works 10, times 15/s, iters 2, expected 5000000000/ns, actual 5008477500/ns, full 5009465900/ns
+[ 10.090884 0:27 embassy_preempt:161] NATIVE_THREAD_REPORT 24: volume 50, works 10, times 15/s, iters 2, expected 5000000000/ns, actual 5008517700/ns, full 5008994800/ns
+[ 10.091361 0:47 embassy_preempt:161] NATIVE_THREAD_REPORT 44: volume 50, works 10, times 15/s, iters 2, expected 5000000000/ns, actual 5008493100/ns, full 5008991600/ns
+[ 10.110412 0:4 embassy_preempt:161] NATIVE_THREAD_REPORT 1: volume 50, works 10, times 15/s, iters 5, expected 2000000000/ns, actual 2009559100/ns, full 2010009400/ns
+[ 10.110994 0:24 embassy_preempt:161] NATIVE_THREAD_REPORT 21: volume 50, works 10, times 15/s, iters 5, expected 2000000000/ns, actual 2009706600/ns, full 2010136900/ns
+[ 10.111512 0:44 embassy_preempt:161] NATIVE_THREAD_REPORT 41: volume 50, works 10, times 15/s, iters 5, expected 2000000000/ns, actual 2009811300/ns, full 2010220600/ns
+[ 10.140377 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 10, expected 1000000000/ns, actual 1001191900/ns, full 1001730400/ns
+[ 10.141083 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 10, expected 1000000000/ns, actual 1001475600/ns, full 1001892400/ns
+[ 11.080527 0:13 embassy_preempt:161] NATIVE_THREAD_REPORT 10: volume 50, works 10, times 15/s, iters 1, expected 11000000000/ns, actual 11009501700/ns, full 11009501800/ns
+[ 11.081091 0:33 embassy_preempt:161] NATIVE_THREAD_REPORT 30: volume 50, works 10, times 15/s, iters 1, expected 11000000000/ns, actual 11009992100/ns, full 11009992200/ns
+[ 11.082108 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 10: volume 15, works 10, times 15/s, iters 1, expected 11000000000/ns, actual 11004367300/ns, full 11004367400/ns
+[ 11.082798 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 25: volume 15, works 10, times 15/s, iters 1, expected 11000000000/ns, actual 11005061600/ns, full 11005061700/ns
+[ 11.150524 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 11, expected 1000000000/ns, actual 1009449100/ns, full 1010146200/ns
+[ 11.151159 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 11, expected 1000000000/ns, actual 1009526100/ns, full 1010076700/ns
+[ 12.077441 0:14 embassy_preempt:161] NATIVE_THREAD_REPORT 11: volume 50, works 10, times 15/s, iters 1, expected 12000000000/ns, actual 12006412500/ns, full 12006412600/ns
+[ 12.077927 0:34 embassy_preempt:161] NATIVE_THREAD_REPORT 31: volume 50, works 10, times 15/s, iters 1, expected 12000000000/ns, actual 12006824600/ns, full 12006824700/ns
+[ 12.080164 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 11: volume 15, works 10, times 15/s, iters 1, expected 12000000000/ns, actual 12002431400/ns, full 12002431500/ns
+[ 12.080602 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 5: volume 15, works 10, times 15/s, iters 2, expected 6000000000/ns, actual 5997118900/ns, full 5997714200/ns
+[ 12.081013 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 3: volume 15, works 10, times 15/s, iters 3, expected 4000000000/ns, actual 3997714500/ns, full 3998250400/ns
+[ 12.081451 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 2: volume 15, works 10, times 15/s, iters 4, expected 3000000000/ns, actual 2998552300/ns, full 2998953600/ns
+[ 12.081850 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 1: volume 15, works 10, times 15/s, iters 6, expected 2000000000/ns, actual 1997185000/ns, full 1997701300/ns
+[ 12.082254 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 16: volume 15, works 10, times 15/s, iters 6, expected 2000000000/ns, actual 1997092000/ns, full 1997570200/ns
+[ 12.082651 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 17: volume 15, works 10, times 15/s, iters 4, expected 3000000000/ns, actual 2999333300/ns, full 2999736600/ns
+[ 12.083045 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 18: volume 15, works 10, times 15/s, iters 3, expected 4000000000/ns, actual 3998432800/ns, full 3998842500/ns
+[ 12.083461 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 20: volume 15, works 10, times 15/s, iters 2, expected 6000000000/ns, actual 5996462800/ns, full 5997099100/ns
+[ 12.094429 0:6 embassy_preempt:161] NATIVE_THREAD_REPORT 3: volume 50, works 10, times 15/s, iters 3, expected 4000000000/ns, actual 4012210900/ns, full 4012604700/ns
+[ 12.094865 0:8 embassy_preempt:161] NATIVE_THREAD_REPORT 5: volume 50, works 10, times 15/s, iters 2, expected 6000000000/ns, actual 6013332500/ns, full 6014203500/ns
+[ 12.095313 0:28 embassy_preempt:161] NATIVE_THREAD_REPORT 25: volume 50, works 10, times 15/s, iters 2, expected 6000000000/ns, actual 6013163200/ns, full 6013771700/ns
+[ 12.095746 0:48 embassy_preempt:161] NATIVE_THREAD_REPORT 45: volume 50, works 10, times 15/s, iters 2, expected 6000000000/ns, actual 6012961300/ns, full 6013592200/ns
+[ 12.096149 0:26 embassy_preempt:161] NATIVE_THREAD_REPORT 23: volume 50, works 10, times 15/s, iters 3, expected 4000000000/ns, actual 4005329800/ns, full 4005804300/ns
+[ 12.096633 0:46 embassy_preempt:161] NATIVE_THREAD_REPORT 43: volume 50, works 10, times 15/s, iters 3, expected 4000000000/ns, actual 4005325300/ns, full 4005807900/ns
+[ 12.097164 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 26: volume 15, works 10, times 15/s, iters 1, expected 12000000000/ns, actual 12019435300/ns, full 12019435400/ns
+[ 12.110403 0:5 embassy_preempt:161] NATIVE_THREAD_REPORT 2: volume 50, works 10, times 15/s, iters 4, expected 3000000000/ns, actual 3009533500/ns, full 3010074300/ns
+[ 12.110875 0:25 embassy_preempt:161] NATIVE_THREAD_REPORT 22: volume 50, works 10, times 15/s, iters 4, expected 3000000000/ns, actual 3009600100/ns, full 3009998200/ns
+[ 12.111271 0:45 embassy_preempt:161] NATIVE_THREAD_REPORT 42: volume 50, works 10, times 15/s, iters 4, expected 3000000000/ns, actual 3009598300/ns, full 3009994000/ns
+[ 12.120409 0:4 embassy_preempt:161] NATIVE_THREAD_REPORT 1: volume 50, works 10, times 15/s, iters 6, expected 2000000000/ns, actual 2009422600/ns, full 2009998600/ns
+[ 12.120986 0:24 embassy_preempt:161] NATIVE_THREAD_REPORT 21: volume 50, works 10, times 15/s, iters 6, expected 2000000000/ns, actual 2009478500/ns, full 2009991400/ns
+[ 12.121374 0:44 embassy_preempt:161] NATIVE_THREAD_REPORT 41: volume 50, works 10, times 15/s, iters 6, expected 2000000000/ns, actual 2009374900/ns, full 2009862100/ns
+[ 12.160389 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 12, expected 1000000000/ns, actual 1009235500/ns, full 1009866100/ns
+[ 12.160907 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 12, expected 1000000000/ns, actual 1009238300/ns, full 1009747600/ns
+[ 13.080490 0:15 embassy_preempt:161] NATIVE_THREAD_REPORT 12: volume 50, works 10, times 15/s, iters 1, expected 13000000000/ns, actual 13009458200/ns, full 13009458300/ns
+[ 13.080970 0:35 embassy_preempt:161] NATIVE_THREAD_REPORT 32: volume 50, works 10, times 15/s, iters 1, expected 13000000000/ns, actual 13009862200/ns, full 13009862400/ns
+[ 13.081410 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 12: volume 15, works 10, times 15/s, iters 1, expected 13000000000/ns, actual 13003684700/ns, full 13003684900/ns
+[ 13.081830 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 27: volume 15, works 10, times 15/s, iters 1, expected 13000000000/ns, actual 13004108100/ns, full 13004108200/ns
+[ 13.164345 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 13, expected 1000000000/ns, actual 1003442500/ns, full 1003956100/ns
+[ 13.164860 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 13, expected 1000000000/ns, actual 1003399400/ns, full 1003953200/ns
+[ 14.080317 0:16 embassy_preempt:161] NATIVE_THREAD_REPORT 13: volume 50, works 10, times 15/s, iters 1, expected 14000000000/ns, actual 14009282900/ns, full 14009283000/ns
+[ 14.080825 0:36 embassy_preempt:161] NATIVE_THREAD_REPORT 33: volume 50, works 10, times 15/s, iters 1, expected 14000000000/ns, actual 14009714700/ns, full 14009714800/ns
+[ 14.081272 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 13: volume 15, works 10, times 15/s, iters 1, expected 14000000000/ns, actual 14003555100/ns, full 14003555300/ns
+[ 14.081685 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 6: volume 15, works 10, times 15/s, iters 2, expected 7000000000/ns, actual 6999030400/ns, full 6999564800/ns
+[ 14.082088 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 21: volume 15, works 10, times 15/s, iters 2, expected 7000000000/ns, actual 6998890300/ns, full 6999408100/ns
+[ 14.082506 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 28: volume 15, works 10, times 15/s, iters 1, expected 14000000000/ns, actual 14004836700/ns, full 14004836900/ns
+[ 14.090357 0:9 embassy_preempt:161] NATIVE_THREAD_REPORT 6: volume 50, works 10, times 15/s, iters 2, expected 7000000000/ns, actual 7009468300/ns, full 7010021700/ns
+[ 14.090926 0:29 embassy_preempt:161] NATIVE_THREAD_REPORT 26: volume 50, works 10, times 15/s, iters 2, expected 7000000000/ns, actual 7009400000/ns, full 7010032400/ns
+[ 14.091320 0:49 embassy_preempt:161] NATIVE_THREAD_REPORT 46: volume 50, works 10, times 15/s, iters 2, expected 7000000000/ns, actual 7009287100/ns, full 7009785600/ns
+[ 14.091789 0:53 embassy_preempt:126] ASYNC_TASK_REPORT_HIGH 1: volume 15, works 10, times 15/s, iters 7, expected 2000000000/ns, actual 2009549400/ns, full 2009938100/ns
+[ 14.092235 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 16: volume 15, works 10, times 15/s, iters 7, expected 2000000000/ns, actual 2009594300/ns, full 2009981800/ns
+[ 14.130379 0:4 embassy_preempt:161] NATIVE_THREAD_REPORT 1: volume 50, works 10, times 15/s, iters 7, expected 2000000000/ns, actual 2009398900/ns, full 2009968300/ns
+[ 14.130853 0:24 embassy_preempt:161] NATIVE_THREAD_REPORT 21: volume 50, works 10, times 15/s, iters 7, expected 2000000000/ns, actual 2009480900/ns, full 2009867000/ns
+[ 14.131260 0:44 embassy_preempt:161] NATIVE_THREAD_REPORT 41: volume 50, works 10, times 15/s, iters 7, expected 2000000000/ns, actual 2009503000/ns, full 2009885600/ns
+[ 14.170357 0:23 embassy_preempt:161] NATIVE_THREAD_REPORT 20: volume 50, works 10, times 15/s, iters 14, expected 1000000000/ns, actual 1005501600/ns, full 1006011500/ns
+[ 14.170833 0:43 embassy_preempt:161] NATIVE_THREAD_REPORT 40: volume 50, works 10, times 15/s, iters 14, expected 1000000000/ns, actual 1005572400/ns, full 1005972900/ns
+[ 15.070503 0:53 embassy_preempt:134] ASYNC_TASK_REPORT_LOW 29: volume 15, works 10, times 15/s, iters 1, expected 15000000000/ns, actual 14994356200/ns, full 14994385400/ns
+[ 15.080628 0:17 embassy_preempt:161] NATIVE_THREAD_REPORT 14: volume 50, works 10, times 15/s, iters 1, expected 15000000000/ns, actual 15009592100/ns, full 15009592200/ns
+[ 15.082743 0:37 embassy_preempt:161] NATIVE_THREAD_REPORT 34: volume 50, works 10, times 15/s, iters 1, expected 15000000000/ns, actual 15011629700/ns, full 15011629800/ns
+[ 15.083881 0:2 axhal::platform::riscv64_qemu_virt::misc:3] Shutting down...
+make[1]: Leaving directory '/home/nostalgia/Proj/RustProj/oscamp-arceos'

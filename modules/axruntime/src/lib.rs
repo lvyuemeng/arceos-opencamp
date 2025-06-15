@@ -154,10 +154,6 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
     {
         axtask::init_scheduler();
     }
-    #[cfg(feature = "embassy-thread")]
-    {
-        axembassy::init_spawn();
-    }
 
     #[cfg(any(feature = "fs", feature = "net", feature = "display"))]
     {
@@ -199,14 +195,6 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
     }
 
     unsafe {
-        // sched_cfs will stuck at main thread
-        // because unpark_task will be called first
-        // before park in axembassy init
-        #[cfg(all(not(feature = "sched_cfs"), feature = "embassy-thread"))]
-        {
-            // park main task to let embassy task initialize first
-            axtask::park_current_task();
-        }
         main()
     };
 
@@ -266,9 +254,9 @@ fn init_interrupt() {
         while now_ns >= deadline {
             deadline = now_ns + PERIODIC_INTERVAL_NANOS;
         }
-        use axembassy::AxDriverAPI;
         #[cfg(feature = "embassy-timer")]
         {
+            use axembassy::AxDriverAPI;
             let next_expired = AxDriverAPI::next_expiration(PERIODIC_INTERVAL_NANOS);
             if deadline >= next_expired {
                 deadline = next_expired;
