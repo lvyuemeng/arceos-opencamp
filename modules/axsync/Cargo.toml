@@ -10,14 +10,15 @@ repository = "https://github.com/arceos-org/arceos/tree/main/modules/axsync"
 documentation = "https://arceos-org.github.io/arceos/axsync/index.html"
 
 [features]
-multitask = ["axtask/multitask"]
 default = []
+
+multitask = ["axtask/multitask"]
 
 [dependencies]
 kspin = "0.1"
-axtask = { workspace = true }
+axtask = { workspace = true, features = ["irq", "multitask"] }
 
 [dev-dependencies]
-rand = "0.8"
+rand = "0.9"
 axsync = { workspace = true, features = ["multitask"] }
 axtask = { workspace = true, features = ["test"] }

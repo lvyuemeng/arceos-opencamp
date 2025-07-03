@@ -1,0 +1,8 @@
+[package]
+name = "embassy-single"
+authors = ["nostalgia <lv15623448685@gmail.com>"]
+edition.workspace = true
+
+[dependencies]
+axstd = { workspace = true, optional = true }
+axasync = { workspace = true, features = ["single", "time"] }

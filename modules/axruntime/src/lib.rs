@@ -151,7 +151,9 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
     axhal::platform_init();
 
     #[cfg(feature = "multitask")]
-    axtask::init_scheduler();
+    {
+        axtask::init_scheduler();
+    }
 
     #[cfg(any(feature = "fs", feature = "net", feature = "display"))]
     {
@@ -192,7 +194,9 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
         core::hint::spin_loop();
     }
 
-    unsafe { main() };
+    unsafe {
+        main()
+    };
 
     #[cfg(feature = "multitask")]
     axtask::exit(0);
@@ -247,8 +251,16 @@ fn init_interrupt() {
         let now_ns = axhal::time::monotonic_time_nanos();
         // Safety: we have disabled preemption in IRQ handler.
         let mut deadline = unsafe { NEXT_DEADLINE.read_current_raw() };
-        if now_ns >= deadline {
+        while now_ns >= deadline {
             deadline = now_ns + PERIODIC_INTERVAL_NANOS;
+        }
+        #[cfg(feature = "embassy-timer")]
+        {
+            use axembassy::AxDriverAPI;
+            let next_expired = AxDriverAPI::next_expiration(PERIODIC_INTERVAL_NANOS);
+            if deadline >= next_expired {
+                deadline = next_expired;
+            }
         }
         unsafe { NEXT_DEADLINE.write_current_raw(deadline + PERIODIC_INTERVAL_NANOS) };
         axhal::time::set_oneshot_timer(deadline);
